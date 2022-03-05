@@ -35,9 +35,11 @@ var (
 	flagEmailFrom      string
 	flagEmailFromName  string = "WireGuard UI"
 	flagSessionSecret  string
+	flagDbPath         string = defaultDbPath
 )
 
 const (
+	defaultDbPath       = "./db"
 	defaultEmailSubject = "Your wireguard configuration"
 	defaultEmailContent = `Hi,</br>
 <p>In this email you can find your personal configuration for our wireguard server.</p>
@@ -61,6 +63,7 @@ func init() {
 	flag.StringVar(&flagEmailFrom, "email-from", util.LookupEnvOrString("EMAIL_FROM_ADDRESS", flagEmailFrom), "'From' email address.")
 	flag.StringVar(&flagEmailFromName, "email-from-name", util.LookupEnvOrString("EMAIL_FROM_NAME", flagEmailFromName), "'From' email name.")
 	flag.StringVar(&flagSessionSecret, "session-secret", util.LookupEnvOrString("SESSION_SECRET", flagSessionSecret), "The key used to encrypt session cookies.")
+	flag.StringVar(&flagDbPath, "db-path", util.LookupEnvOrString("DB_PATH", flagDbPath), "Path to db files, default is './db'")
 	flag.Parse()
 
 	// update runtime config
@@ -76,6 +79,7 @@ func init() {
 	util.EmailFrom = flagEmailFrom
 	util.EmailFromName = flagEmailFromName
 	util.SessionSecret = []byte(flagSessionSecret)
+	util.DbPath = flagDbPath
 
 	// print app information
 	fmt.Println("Wireguard UI")
@@ -89,12 +93,13 @@ func init() {
 	//fmt.Println("Sendgrid key\t:", util.SendgridApiKey)
 	fmt.Println("Email from\t:", util.EmailFrom)
 	fmt.Println("Email from name\t:", util.EmailFromName)
+	fmt.Println("Db files path\t:", util.DbPath)
 	//fmt.Println("Session secret\t:", util.SessionSecret)
 
 }
 
 func main() {
-	db, err := jsondb.New("./db")
+	db, err := jsondb.New(flagDbPath)
 	if err != nil {
 		panic(err)
 	}
