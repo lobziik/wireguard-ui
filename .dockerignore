@@ -25,3 +25,4 @@ docker-compose*
 db
 assets
 wireguard-ui
+vendor
