@@ -37,7 +37,7 @@ jobs:
     # setup node
     - uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '17'
         registry-url: 'https://registry.npmjs.org'
 
     # prepare assets for go rice
