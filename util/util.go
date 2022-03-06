@@ -218,7 +218,7 @@ func GetAllocatedIPs(ignoreClientID string) ([]string, error) {
 	allocatedIPs := make([]string, 0)
 
 	// initialize database directory
-	dir := "./db"
+	dir := DbPath
 	db, err := scribble.New(dir, nil)
 	if err != nil {
 		return nil, err
